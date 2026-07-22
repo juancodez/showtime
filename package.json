@@ -1,0 +1,17 @@
+{
+  "name": "showtime",
+  "version": "0.1.0",
+  "description": "Local screen recorder with webcam bubble (Loom-style), fully offline.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "ffmpeg-static": "^5.3.0"
+  }
+}

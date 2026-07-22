@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recording</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d1018;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 16px;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #e6e9f0;
+      -webkit-app-region: drag;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: #e5484d;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 14px rgba(229, 72, 77, 0.4);
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #e5484d;
+      box-shadow: 0 0 8px rgba(229, 72, 77, 0.6);
+      animation: pulse 1.2s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+      flex-shrink: 0;
+    }
+    body.paused .dot { animation: none; opacity: 0.3; box-shadow: none; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.2; transform: scale(0.65); }
+    }
+    .actions { display: flex; gap: 7px; -webkit-app-region: no-drag; }
+    button {
+      background: rgba(255,255,255,0.05);
+      color: #e6e9f0;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      height: 32px;
+      padding: 0 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+      transition: background 250ms cubic-bezier(0.32, 0.72, 0, 1),
+                  border-color 250ms cubic-bezier(0.32, 0.72, 0, 1),
+                  transform 350ms cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    button:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); }
+    button:active { transform: scale(0.95); }
+    #stopBtn {
+      background: #e5484d;
+      border-color: #e5484d;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(229, 72, 77, 0.3);
+    }
+    #stopBtn:hover {
+      background: #f2555a;
+      border-color: #f2555a;
+      box-shadow: 0 0 16px rgba(229, 72, 77, 0.45);
+    }
+  </style>
+</head>
+<body>
+  <div class="timer"><span class="dot"></span><span id="timer">00:00</span></div>
+  <div class="actions">
+    <button id="pauseBtn">Pause</button>
+    <button id="stopBtn">■ Stop</button>
+  </div>
+  <script>
+    const pauseBtn = document.getElementById('pauseBtn');
+    window.api.onTimerUpdate((text) => {
+      document.getElementById('timer').textContent = text;
+    });
+    pauseBtn.addEventListener('click', () => {
+      const paused = document.body.classList.toggle('paused');
+      pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+      window.api.controlAction(paused ? 'pause' : 'resume');
+    });
+    document.getElementById('stopBtn').addEventListener('click', () => {
+      window.api.controlAction('stop');
+    });
+  </script>
+</body>
+</html>

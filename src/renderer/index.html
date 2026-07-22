@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data:; media-src 'self' blob:; style-src 'self'">
+  <title>ShowTime</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="icon.svg" alt="" class="brand-icon" aria-hidden="true">
+      <h1>ShowTime</h1>
+    </div>
+    <p class="muted">Screen recorder · Webcam bubble · 100% local</p>
+  </header>
+
+  <main>
+    <!-- Setup -->
+    <section id="setupSection" class="panel">
+      <h2>Setup</h2>
+      <div class="controls-row">
+        <button id="pickSourceBtn" class="btn primary">Choose screen / window</button>
+        <span id="sourceName" class="muted"></span>
+      </div>
+
+      <div class="controls-grid">
+        <label>Camera
+          <select id="cameraSelect"></select>
+        </label>
+        <label>Microphone
+          <select id="micSelect"></select>
+        </label>
+        <label>Mic level
+          <div class="vu"><div id="micLevelBar"></div></div>
+        </label>
+        <label>Bubble size
+          <input type="range" id="bubbleSize" min="0.06" max="0.3" step="0.01" value="0.14">
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="systemAudio"> Include system audio (full screen only)
+        </label>
+      </div>
+
+    </section>
+
+    <!-- Live preview -->
+    <section id="previewSection" class="panel hidden">
+      <div class="canvas-wrap">
+        <canvas id="previewCanvas" width="1920" height="1080"></canvas>
+        <div id="countdownOverlay" class="overlay hidden">
+          <span id="countdownNumber">3</span>
+        </div>
+      </div>
+      <div class="controls-row center">
+        <button id="recordBtn" class="btn record" disabled>● Record</button>
+        <div id="recordControls" class="hidden">
+          <span id="timer" class="timer">00:00</span>
+          <button id="pauseBtn" class="btn">Pause</button>
+          <button id="stopBtn" class="btn danger">■ Stop</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editor -->
+    <section id="editorSection" class="panel hidden">
+      <h2>Review &amp; save</h2>
+      <div class="media-shell">
+        <video id="playerVideo" controls></video>
+      </div>
+      <div class="controls-row">
+        <label class="inline">Subtitles
+          <select id="subtitleSelect">
+            <option value="none" selected>None</option>
+            <option value="original">As spoken</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="es">Spanish</option>
+          </select>
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="burnSubtitles"> Burn into video
+        </label>
+        <button id="exportBtn" class="btn primary">Save video…</button>
+        <button id="openFileBtn" class="btn hidden">▶ Open</button>
+      </div>
+      <p id="lastSaved" class="muted mono"></p>
+    </section>
+  </main>
+
+  <footer>
+    <div id="statusBar" class="status">Pick a screen or window to begin.</div>
+  </footer>
+
+  <!-- Source picker modal -->
+  <div id="sourceModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Choose what to record</h2>
+        <button id="closeModalBtn" class="btn">✕</button>
+      </div>
+      <div id="sourceGrid" class="source-grid"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
